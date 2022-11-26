@@ -60,5 +60,5 @@ struct RES_RECORD
 typedef struct
 {
     unsigned char *name;
-    struct QUESTION *ques;
+    struct QUESTION ques;
 } QUERY;
