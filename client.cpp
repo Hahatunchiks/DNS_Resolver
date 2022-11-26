@@ -15,6 +15,6 @@ int main(int argc, char *argv[]) {
   std::string url{argv[1]};
   client.Send(url);
   std::string ip = client.Receive();
-  std::cerr << ip << std::endl;
+  std::cout << ip << std::endl;
   return 0;
 }
