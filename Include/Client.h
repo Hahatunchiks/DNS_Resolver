@@ -107,8 +107,6 @@ class Client {
     resp.auth_count = htons(resp.auth_count);
     resp.add_count = htons(resp.add_count);
 
-    std::cerr << "HEADER " << resp.id << " " << resp.q_count << " " << resp.ans_count << std::endl;
-
     int it = sizeof(DNS_HEADER);
 
     std::stringstream ss;
@@ -121,7 +119,6 @@ class Client {
       }
     }
 
-    std::cerr << ss.str() << std::endl;
 
     ss.clear();
     ss.flush();
@@ -135,7 +132,6 @@ class Client {
     rData._class = ntohs(rData._class);
     rData.type = ntohs(rData.type);
 
-    std::cerr << "RDATA " << rData.type << " " << rData._class << " " << rData.ttl << " " << rData.data_len << std::endl;
     it += sizeof(rData);
 
     std::string ip;
