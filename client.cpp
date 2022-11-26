@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     std::string ip = client.Receive();
     std::cout << ip << std::endl;
   } catch (std::runtime_error &e) {
-    if(errno == EAGAIN || errno == EWOULDBLOCK) {
+    if (errno == EAGAIN || errno == EWOULDBLOCK) {
       return 0;
     }
     return -1;
