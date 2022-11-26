@@ -9,8 +9,8 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  std::string port = argc == 3 ? "53" : argv[3];
-  std::string host = argc == 2 ? "localhost" : argv[2];
+  std::string port = (argc == 3 || argc == 2) ? "53" : argv[3];
+  std::string host = argc == 2 ? "127.0.0.1" : argv[2];
   Client client{port, host};
   std::string url{argv[1]};
   client.Send(url);
