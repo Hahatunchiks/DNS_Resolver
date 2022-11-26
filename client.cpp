@@ -1,11 +1,10 @@
 #include "Include/Client.h"
 
-
 int main(int argc, char *argv[]) {
   (void)argc;
   (void)argv;
 
-  if(argc > 4 || argc < 2) {
+  if (argc > 4 || argc < 2) {
     std::cerr << "Expected from 2 to 4  arguments" << std::endl;
     return -1;
   }
