@@ -87,12 +87,7 @@ class Server {
     ip[0] = 0;
     ip[1] = 0;
     ip[2] = 0;
-    ip[3] = 0;
-    for(const char &i : parsed.m_Url) {
-      if(i != '.') {
-        ip[3]++;
-      }
-    }
+    ip[3] = !parsed.m_Url.empty() ? parsed.m_Url.size() : 1;
 
     unsigned short offset = htons(0xC00C);
 
