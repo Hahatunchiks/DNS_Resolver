@@ -67,8 +67,9 @@ class Client {
         octet += i;
       }
     }
-    octets.emplace_back(octet.size(), octet);
-    octet.clear();
+    if(!octet.empty()) {
+      octets.emplace_back(octet.size(), octet);
+    }
 
     std::stringstream ss;
     ss.write((char *)&request_header, sizeof(request_header));
@@ -76,8 +77,10 @@ class Client {
       ss.write((char *)&i.first, sizeof(char));
       ss.write(i.second.c_str(), i.second.size());
     }
-    char ending = 0x0;
-    ss.write((char *)&ending, sizeof(char));
+    if(!octet.empty()) {
+      char ending = 0x0;
+      ss.write((char *)&ending, sizeof(char));
+    }
     ss.write((char *)&request_query, sizeof(request_query));
 
     ssize_t sent = sendto(m_SockFd, ss.str().c_str(), ss.str().size(), 0,
@@ -110,7 +113,9 @@ class Client {
     resp.ans_count = htons(resp.ans_count);
     resp.auth_count = htons(resp.auth_count);
     resp.add_count = htons(resp.add_count);
-
+    if(resp.ans_count == 0) {
+      return "";
+    }
     int it = sizeof(DNS_HEADER);
 
     std::stringstream ss;
