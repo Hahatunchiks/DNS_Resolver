@@ -19,9 +19,9 @@ int main(int argc, char *argv[]) {
     std::cout << ip << std::endl;
   } catch (std::runtime_error &e) {
     if (errno == EAGAIN || errno == EWOULDBLOCK) {
-      return -2;
+      return 2;
     }
-    return -1;
+    return 1;
   }
   return 0;
 }
