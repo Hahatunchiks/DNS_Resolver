@@ -9,13 +9,16 @@ int main(int argc, char *argv[]) {
     return -1;
   }
   std::string port = argc == 1 ? "53" : argv[1];
-  Server server{port};
-  while (true) {
-    sockaddr_storage *clt = nullptr;
-    char *buffer = nullptr;
-    auto received = server.Receive(&clt, &buffer);
-    server.Send(buffer, received, clt);
+  try {
+    Server server{port};
+    while (true) {
+      sockaddr_storage *clt = nullptr;
+      char *buffer = nullptr;
+      auto received = server.Receive(&clt, &buffer);
+      server.Send(buffer, received, clt);
+    }
+  } catch (const std::runtime_error &err) {
+    return -1;
   }
-
   return 0;
 }

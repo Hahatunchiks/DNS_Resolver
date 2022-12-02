@@ -18,7 +18,6 @@ class Client {
     m_Hints.ai_socktype = SOCK_DGRAM;
 
     if (getaddrinfo(host.c_str(), port.c_str(), &m_Hints, &m_AddrInfo) != 0) {
-      perror("getaddrinfo:");
       throw std::runtime_error{"getaddrinfo: cannot fill info from hints"};
     }
 
@@ -31,10 +30,18 @@ class Client {
       break;
     }
 
-    timeval timeout;
+    if (m_SockFd == -1) {
+      throw std::runtime_error{"socket: cannot create socket"};
+    }
+
+    timeval timeout{};
     timeout.tv_sec = 10;
     timeout.tv_usec = 0;
-    setsockopt(m_SockFd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+    if (setsockopt(m_SockFd, SOL_SOCKET, SO_RCVTIMEO, &timeout,
+                   sizeof(timeout)) < 0) {
+      throw std::runtime_error{"setsockopt: cannot set timeout option"};
+    }
+
     m_Host = p;
     freeaddrinfo(m_AddrInfo);
   }
@@ -67,7 +74,7 @@ class Client {
         octet += i;
       }
     }
-    if(!octet.empty()) {
+    if (!octet.empty()) {
       octets.emplace_back(octet.size(), octet);
     }
 
@@ -77,7 +84,7 @@ class Client {
       ss.write((char *)&i.first, sizeof(char));
       ss.write(i.second.c_str(), i.second.size());
     }
-    if(!octet.empty()) {
+    if (!octet.empty()) {
       char ending = 0x0;
       ss.write((char *)&ending, sizeof(char));
     }
@@ -113,7 +120,7 @@ class Client {
     resp.ans_count = htons(resp.ans_count);
     resp.auth_count = htons(resp.auth_count);
     resp.add_count = htons(resp.add_count);
-    if(resp.ans_count == 0) {
+    if (resp.ans_count == 0) {
       return "";
     }
     int it = sizeof(DNS_HEADER);
@@ -127,7 +134,6 @@ class Client {
         ss << ".";
       }
     }
-
 
     ss.clear();
     ss.flush();

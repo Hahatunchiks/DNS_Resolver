@@ -12,6 +12,7 @@ struct DNS_REQ {
   std::string m_Url;
   QUESTION m_Question;
 };
+
 class Server {
  public:
   explicit Server(const std::string &port, size_t buffSize = 4096)
@@ -80,9 +81,7 @@ class Server {
 
   int Send( char *buf, int buffSize, sockaddr_storage *clt) {
 
-
     auto parsed = ParseDNS(&buf);
-
     unsigned char ip[4];
     ip[0] = 0;
     ip[1] = 0;
